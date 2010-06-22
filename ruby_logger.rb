@@ -3,6 +3,8 @@
 # ruby_logger.rb
 
 
+require 'time'
+
 class LoggerException < StandardError
 end
 
@@ -19,13 +21,7 @@ module DebugLogger
   def log_init(logfile=nil, logflags=[])
     @log_depth   = 0
     @log_logfile = logfile
-    @log_flags   = []
-    if logflags.member? :Log
-      @log_flags << :Log
-    end
-    if logflags.member? :Debug
-      @log_flags << :Debug
-    end
+    @log_flags   = logflags & [:Log, :Debug, :TimeStamp]
     @log_stream  = nil
 
   end
@@ -62,12 +58,13 @@ module DebugLogger
   end
 
   def log_mesg(mesg, level=:Debug)
-    mesg_content = ""
-    for ii in 1..@log_depth
-      mesg_content += "  "
+    mesg_content = "  " * @log_depth
+    mesg_content += level.to_s
+    if @log_flags.member? :TimeStamp
+      mesg_content += (" [ " + Time::now.to_s + " ] : ")
+    else
+      mesg_content += " : "
     end
-
-    mesg_content += (level.to_s + ": " + mesg)
 
     if @log_flags.member? :Debug
       puts mesg_content
