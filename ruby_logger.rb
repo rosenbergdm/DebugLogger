@@ -10,7 +10,7 @@ class LoggerDepthException < LoggerException
 end
 
 
-module Logger
+module DebugLogger
   attr :log_depth
   attr :log_logfile
   attr :log_flags

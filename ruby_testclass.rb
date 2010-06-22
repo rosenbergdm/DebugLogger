@@ -5,7 +5,7 @@
 require "ruby_logger"
 
 class TestMe
-  include Logger
+  include DebugLogger
   
   def initialize(logfile, log_flags=[])
     @nums   = [1,1,2,3,5]
